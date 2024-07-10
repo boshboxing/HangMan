@@ -1,16 +1,21 @@
 import random
 from words import word_list
 
-
 def get_word():
     word = random.choice(word_list)
     return word.upper()
 
+def reveal_letter(word, word_completion):
+    index = random.choice(range(len(word)))
+    word_completion_list = list(word_completion)
+    word_completion_list[index] = word[index]
+    return "".join(word_completion_list)
 
 def play(word):
     word_completion = "_" * len(word)
+    word_completion = reveal_letter(word, word_completion)
     guessed = False
-    guessed_letters = []
+    guessed_letters = [word_completion.strip("_")]
     guessed_words = []
     tries = 6
     print("Let's play Hangman!")
@@ -55,7 +60,6 @@ def play(word):
         print("Congrats, you guessed the word! You win!")
     else:
         print("Sorry, you ran out of tries. The word was " + word + ". Maybe next time!")
-
 
 def display_hangman(tries):
     stages = [  # final state: head, torso, both arms, and both legs
@@ -131,14 +135,12 @@ def display_hangman(tries):
     ]
     return stages[tries]
 
-
 def main():
     word = get_word()
     play(word)
-    while input("PlayAgain? (Y/N) ").upper() == "Y":
+    while input("Play Again? (Y/N) ").upper() == "Y":
         word = get_word()
         play(word)
-
 
 if __name__ == "__main__":
     main()
